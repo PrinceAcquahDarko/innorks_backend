@@ -36,6 +36,7 @@ const registerUser = async(req, res) => {
         connection.release()
 
     } catch (error) {
+        console.log(error)
         return res
         .status(500)
         .json({ message: "could not register User"});

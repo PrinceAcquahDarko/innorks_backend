@@ -6,7 +6,7 @@ dotenv.config();
 const {Pool} = pool
 
 const con = new Pool({
-   connectionString:process.env.DATABASEURL,
+   connectionString:process.env.DATABASE_URL,
    ssl:{
     rejectUnauthorized:false
    }

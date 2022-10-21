@@ -5,7 +5,7 @@ const getAllBooks = async(req, res) => {
     try {
         const connection = await con.connect()
 
-        let allBooks = await connection.query('SELECT * FROM books ORDER BY id ASC');
+        let allBooks = await connection.query('SELECT * FROM users ORDER BY id ASC');
         console.log(allBooks.rows[0])
         res
         .status(200)
@@ -25,7 +25,7 @@ const getBookById = async(req, res) => {
     try {
         const connection = await con.connect()
 
-        let book = await connection.query('SELECT * FROM books WHERE id = $1', [+req.query.bookId]);
+        let book = await connection.query('SELECT * FROM users WHERE id = $1', [+req.query.bookId]);
         res
         .status(200)
         .json({"message":"success", "book":book.rows[0]})
@@ -50,7 +50,7 @@ const createBook = async(req, res) => {
         console.log(response);
         console.log(data.link)
 
-        let book = await connection.query('INSERT INTO books (title, author,link, category) VALUES ($1,$2,$3,$4) RETURNING *',
+        let book = await connection.query('INSERT INTO users (title, author,link, category) VALUES ($1,$2,$3,$4) RETURNING *',
          [data.title, data.author, data.link, data.category])
         res
         .status(200)
@@ -58,6 +58,7 @@ const createBook = async(req, res) => {
         connection.release()
 
     } catch (error) {
+        console.log(error)
         return res
         .status(500)
         .json({ message: "could not create Book"});
@@ -77,13 +78,13 @@ const updateBook = async(req, res) => {
     try {
         if(link){
              update = await connection.query(
-                'UPDATE books SET title = $1, author = $2, category = $3, link = $4 WHERE id = $5',
+                'UPDATE users SET title = $1, author = $2, category = $3, link = $4 WHERE id = $5',
             [title, author, category,link, +req.query.bookId])
             console.log(update)
 
         }else{
              update = await connection.query(
-                'UPDATE books SET title = $1, author = $2, category = $3WHERE id = $4',
+                'UPDATE users SET title = $1, author = $2, category = $3WHERE id = $4',
             [title, author, category, +req.query.bookId])
             console.log(update)
         }
@@ -107,7 +108,7 @@ const deleteBook = async(req, res) => {
     try {
         const connection = await con.connect()
 
-        await connection.query('DELETE FROM books WHERE id = $1', [+req.query.bookId])
+        await connection.query('DELETE FROM users WHERE id = $1', [+req.query.bookId])
         res
         .status(200)
         .json({"message":"deleted successfully"});
