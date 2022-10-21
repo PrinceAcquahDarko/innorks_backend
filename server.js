@@ -1,4 +1,7 @@
 import express from 'express'
+import dotenv from "dotenv";
+
+dotenv.config();
 const app = express()
 
 import cors from 'cors';
@@ -14,7 +17,7 @@ app.use('/api/v1/login', LoginRouter)
 app.use('/api/v1/user', RegisterRouter)
 app.use('/api/v1/book', BookRouter)
 
-
-app.listen(3000, function(){
+const PORT = process.env.PORT || 3000
+app.listen(PORT, function(){
     console.log('started')
 })
